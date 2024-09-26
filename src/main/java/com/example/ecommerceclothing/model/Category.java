@@ -3,6 +3,7 @@ package com.example.ecommerceclothing.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @Entity
 @Table(name = "categories")
@@ -12,15 +13,15 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Lob
     private String description;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore  // Bỏ qua danh sách products khi tuần tự hóa sang JSON
-    private List<Product> products;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Getters and Setters
+    // Getters và Setters
 
     public Long getId() {
         return id;
@@ -46,11 +47,11 @@ public class Category {
         this.description = description;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

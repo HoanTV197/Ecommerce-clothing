@@ -2,36 +2,37 @@ package com.example.ecommerceclothing.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "Products")
+@Table(name = "products")
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String description;
-    private double price;
-    private int stock;
-
-    @ManyToOne(fetch = FetchType.EAGER)  // Đảm bảo fetch category với product
-    @JoinColumn(name = "category_id", nullable = false)  // Đảm bảo tên cột và không để null
+    @ManyToOne
+    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_product_category"))
     private Category category;
 
-    public Product(Long id, String name, String description, double price, int stock, Category category) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.stock = stock;
-        this.category = category;
-    }
+    @Column(nullable = false)
+    private String name;
 
-    public Product() {
+    @Lob
+    private String description;
 
-    }
+    @Column(nullable = false)
+    private BigDecimal price;
 
-    // Getters, setters
+    private int stock = 0;
+
+    private String imageUrl;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    // Getters và Setters
 
     public Long getId() {
         return id;
@@ -39,6 +40,14 @@ public class Product {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getName() {
@@ -57,11 +66,11 @@ public class Product {
         this.description = description;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -73,11 +82,19 @@ public class Product {
         this.stock = stock;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

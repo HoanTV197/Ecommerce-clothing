@@ -1,33 +1,60 @@
 package com.example.ecommerceclothing.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
-    private String password;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
-    public User(Long id, String username, String password, String email) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-    }
+    @Column(nullable = false)
+    private String password;
+
+    private String fullName;
+
+    private String phoneNumber;
+
+    @Lob
+    private String address;
+
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.CUSTOMER;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public User() {
 
     }
 
+    // Enum cho vai trò người dùng
+    public enum Role {
+        ADMIN, CUSTOMER
+    }
 
-    // Getters, setters
+    public User(Long id, String username, String email, String password, String fullName, String phoneNumber, String address, Role role, LocalDateTime createdAt) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.role = role;
+        this.createdAt = createdAt;
+    }
+
+    // Getters và Setters
 
     public Long getId() {
         return id;
@@ -45,6 +72,14 @@ public class User {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -53,11 +88,43 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

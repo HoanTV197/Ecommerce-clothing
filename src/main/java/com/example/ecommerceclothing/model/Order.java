@@ -2,35 +2,50 @@ package com.example.ecommerceclothing.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "orders")
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_order_user"))
     private User user;
 
-    private double totalPrice;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status = Status.PENDING;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> items;
+    @Column(nullable = false)
+    private BigDecimal total;
 
-    // Getters, setters
+    @Lob
+    @Column(nullable = false)
+    private String shippingAddress;
 
-    public Order(Long id, User user, double totalPrice, List<OrderItem> items) {
-        this.id = id;
-        this.user = user;
-        this.totalPrice = totalPrice;
-        this.items = items;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentMethod paymentMethod;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    // Enum for Order Status
+    public enum Status {
+        PENDING, SHIPPED, DELIVERED, CANCELLED
     }
 
-    public Order() {
-
+    // Enum for Payment Methods
+    public enum PaymentMethod {
+        CASH_ON_DELIVERY, CREDIT_CARD, PAYPAL
     }
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -48,19 +63,43 @@ public class Order {
         this.user = user;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public List<OrderItem> getItems() {
-        return items;
+    public BigDecimal getTotal() {
+        return total;
     }
 
-    public void setItems(List<OrderItem> items) {
-        this.items = items;
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

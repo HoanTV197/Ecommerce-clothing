@@ -1,33 +1,31 @@
 package com.example.ecommerceclothing.model;
 
 import jakarta.persistence.*;
-
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "order_items")
-public class OrderItem {
+@Table(name = "shopping_cart")
+public class ShoppingCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;  // This is the primary key
 
     @ManyToOne
-    @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "fk_order_item_order"))
-    private Order order;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_order_item_product"))
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @Column(nullable = false)
     private int quantity;
 
-    @Column(nullable = false)
-    private BigDecimal price;
+    @Column(name = "added_at", nullable = false)
+    private LocalDateTime addedAt = LocalDateTime.now();
 
-    // Getters và Setters
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -36,12 +34,12 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Order getOrder() {
-        return order;
+    public User getUser() {
+        return user;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Product getProduct() {
@@ -60,11 +58,11 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public LocalDateTime getAddedAt() {
+        return addedAt;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setAddedAt(LocalDateTime addedAt) {
+        this.addedAt = addedAt;
     }
 }
